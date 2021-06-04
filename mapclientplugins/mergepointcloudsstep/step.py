@@ -1,4 +1,3 @@
-
 '''
 MAP Client Plugin Step
 '''
@@ -9,6 +8,7 @@ from mapclientplugins.mergepointcloudsstep.configuredialog import ConfigureDialo
 
 import numpy as np
 
+
 class MergePointCloudsStep(WorkflowStepMountPoint):
     '''
     Skeleton step which is intended to be a helpful starting point
@@ -17,7 +17,7 @@ class MergePointCloudsStep(WorkflowStepMountPoint):
 
     def __init__(self, location):
         super(MergePointCloudsStep, self).__init__('Merge Point Clouds', location)
-        self._configured = False # A step cannot be executed until it has been configured.
+        self._configured = False  # A step cannot be executed until it has been configured.
         self._category = 'General'
         # Add any other initialisation code here:
         # Ports:
@@ -31,9 +31,9 @@ class MergePointCloudsStep(WorkflowStepMountPoint):
                       'http://physiomeproject.org/workflow/1.0/rdf-schema#provides',
                       'http://physiomeproject.org/workflow/1.0/rdf-schema#pointcloud'))
         # Port data:
-        self._portData0 = None # http://physiomeproject.org/workflow/1.0/rdf-schema#pointcloud
-        self._portData1 = None # http://physiomeproject.org/workflow/1.0/rdf-schema#pointcloud
-        self._portData2 = None # http://physiomeproject.org/workflow/1.0/rdf-schema#pointcloud
+        self._portData0 = None  # http://physiomeproject.org/workflow/1.0/rdf-schema#pointcloud
+        self._portData1 = None  # http://physiomeproject.org/workflow/1.0/rdf-schema#pointcloud
+        self._portData2 = None  # http://physiomeproject.org/workflow/1.0/rdf-schema#pointcloud
         # Config:
         self._config = {}
         self._config['identifier'] = ''
@@ -55,9 +55,9 @@ class MergePointCloudsStep(WorkflowStepMountPoint):
         uses port for this step then the index can be ignored.
         '''
         if index == 0:
-            self._portData0 = np.array(dataIn) # http://physiomeproject.org/workflow/1.0/rdf-schema#pointcloud
+            self._portData0 = np.array(dataIn)  # http://physiomeproject.org/workflow/1.0/rdf-schema#pointcloud
         elif index == 1:
-            self._portData1 = np.array(dataIn) # http://physiomeproject.org/workflow/1.0/rdf-schema#pointcloud
+            self._portData1 = np.array(dataIn)  # http://physiomeproject.org/workflow/1.0/rdf-schema#pointcloud
 
     def getPortData(self, index):
         '''
@@ -65,7 +65,7 @@ class MergePointCloudsStep(WorkflowStepMountPoint):
         The index is the index of the port in the port list.  If there is only one
         provides port for this step then the index can be ignored.
         '''
-        return self._portData2 # http://physiomeproject.org/workflow/1.0/rdf-schema#pointcloud
+        return self._portData2  # http://physiomeproject.org/workflow/1.0/rdf-schema#pointcloud
 
     def configure(self):
         '''
@@ -75,7 +75,7 @@ class MergePointCloudsStep(WorkflowStepMountPoint):
         then set:
             self._configured = True
         '''
-        dlg = ConfigureDialog()
+        dlg = ConfigureDialog(self._main_window)
         dlg.identifierOccursCount = self._identifierOccursCount
         dlg.setConfig(self._config)
         dlg.validate()
@@ -106,7 +106,6 @@ class MergePointCloudsStep(WorkflowStepMountPoint):
         '''
         return json.dumps(self._config, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
-
     def deserialize(self, string):
         '''
         Add code to deserialize this step from string.  This method should
@@ -118,5 +117,3 @@ class MergePointCloudsStep(WorkflowStepMountPoint):
         d.identifierOccursCount = self._identifierOccursCount
         d.setConfig(self._config)
         self._configured = d.validate()
-
-
