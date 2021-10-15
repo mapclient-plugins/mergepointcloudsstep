@@ -1,10 +1,7 @@
 """
 MAP Client Plugin Step
 """
-import json
-
 from mapclient.mountpoints.workflowstep import WorkflowStepMountPoint
-from mapclientplugins.mergepointcloudsstep.configuredialog import ConfigureDialog
 
 import numpy as np
 
@@ -17,7 +14,7 @@ class MergePointCloudsStep(WorkflowStepMountPoint):
 
     def __init__(self, location):
         super(MergePointCloudsStep, self).__init__('Merge Point Clouds', location)
-        self._configured = False  # A step cannot be executed until it has been configured.
+        self._configured = True  # A step cannot be executed until it has been configured.
         self._category = 'General'
         # Add any other initialisation code here:
         # Ports:
@@ -34,9 +31,8 @@ class MergePointCloudsStep(WorkflowStepMountPoint):
         self._portData0 = None  # http://physiomeproject.org/workflow/1.0/rdf-schema#pointcloud
         self._portData1 = None  # http://physiomeproject.org/workflow/1.0/rdf-schema#pointcloud
         self._portData2 = None  # http://physiomeproject.org/workflow/1.0/rdf-schema#pointcloud
-        # Config:
-        self._config = {}
-        self._config['identifier'] = ''
+
+        self._identifier = ''
 
     def execute(self):
         """
@@ -75,45 +71,30 @@ class MergePointCloudsStep(WorkflowStepMountPoint):
         then set:
             self._configured = True
         """
-        dlg = ConfigureDialog(self._main_window)
-        dlg.identifierOccursCount = self._identifierOccursCount
-        dlg.setConfig(self._config)
-        dlg.validate()
-        dlg.setModal(True)
-
-        if dlg.exec_():
-            self._config = dlg.getConfig()
-
-        self._configured = dlg.validate()
-        self._configuredObserver()
+        pass
 
     def getIdentifier(self):
         """
         The identifier is a string that must be unique within a workflow.
         """
-        return self._config['identifier']
+        return self._identifier
 
     def setIdentifier(self, identifier):
         """
         The framework will set the identifier for this step when it is loaded.
         """
-        self._config['identifier'] = identifier
+        self._identifier = identifier
 
     def serialize(self):
         """
         Add code to serialize this step to string.  This method should
         implement the opposite of 'deserialize'.
         """
-        return json.dumps(self._config, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+        pass
 
     def deserialize(self, string):
         """
         Add code to deserialize this step from string.  This method should
         implement the opposite of 'serialize'.
         """
-        self._config.update(json.loads(string))
-
-        d = ConfigureDialog()
-        d.identifierOccursCount = self._identifierOccursCount
-        d.setConfig(self._config)
-        self._configured = d.validate()
+        pass
